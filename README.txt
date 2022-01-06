@@ -1,0 +1,1 @@
+A java app where you can communicate between different terminals just like Whatsapp. It takes advantage of ports.
