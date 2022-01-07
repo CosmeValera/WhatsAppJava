@@ -1,3 +1,5 @@
+package server;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -55,7 +57,9 @@ public class ServidorGeneral {
     }
 
     public void mandarMensajeATodos(String mensaje, String nombre) throws IOException {
-        if (mensaje == null || mensaje.equalsIgnoreCase("")) return;
+        if (mensaje == null || mensaje.trim().equals("")) {
+            return;
+        }
         mandarMensaje(nombre, mensaje);
     }
 
@@ -75,7 +79,7 @@ public class ServidorGeneral {
         mensajeros.remove(mensajeroActual);
 
         //Para que no se muestre por pantalla si se va un Clientereceptor
-        if (mensajeroActual == null || mensajeroActual.getNombre() == null || mensajeroActual.getNombre().equalsIgnoreCase("")) {
+        if (mensajeroActual == null || mensajeroActual.getNombre() == null || mensajeroActual.getNombre().equals("")) {
             return;
         }
 
