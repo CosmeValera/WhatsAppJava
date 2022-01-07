@@ -68,22 +68,32 @@ public class ServidorGeneral {
     }
 
     public void mandarMensajeSalida(String nombre) throws IOException {
-        Mensajero mensajeroActual = null;
-        for (Mensajero mensajero : mensajeros) {
-            mensajeroActual = mensajero;
-            if (isTCPPortAvailable(mensajero.getSocket().getPort())) {
-                //Si esta disponible es pq se ha cancelado la conexion
-                break;
-            }
-        }
+        Mensajero mensajeroActual = obtenerMensajeroAEliminar();
         mensajeros.remove(mensajeroActual);
 
-        //Para que no se muestre por pantalla si se va un Clientereceptor
-        if (mensajeroActual == null || mensajeroActual.getNombre() == null || mensajeroActual.getNombre().equals("")) {
+        if (esClienteReceptor(mensajeroActual)) {
             return;
         }
 
         mandarMensaje(nombre, "HA SALIDO");
+    }
+
+    /**
+     * Si esta disponible es porque se ha cancelado la conexion
+     */
+    private Mensajero obtenerMensajeroAEliminar() {
+        for (Mensajero mensajero : mensajeros) {
+            if (isTCPPortAvailable(mensajero.getSocket().getPort())) {
+                return mensajero;
+            }
+        }
+        return null;
+    }
+
+    private boolean esClienteReceptor(Mensajero mensajeroActual) {
+        return mensajeroActual == null
+            || mensajeroActual.getNombre() == null
+            || mensajeroActual.getNombre().equals("");
     }
 
     private void mandarMensaje(String nombre, String mensaje) throws IOException {
